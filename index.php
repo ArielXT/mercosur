@@ -1,5 +1,6 @@
 <?php
 include_once 'crud.php';
+include_once 'db.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,7 +42,34 @@ include_once 'crud.php';
                     </tr>
                     <tr>
                         <td>
-                            <input type="text" name="idpais" placeholder="País" value="<?php if(isset($_GET['edit'])) echo $getROW['idpais']; ?>">
+                            <select name="idpais" class="caja" style="width: 460px">
+                                <option>Pais Importado</option>
+                                <?php
+                                    $resultSet = $MySQLiconn->query("SELECT idpais FROM pais");
+                                    while ($rows = $resultSet->fetch_assoc()){
+                                        # code...
+                                        $idpais = $rows['idpais'];
+                                        echo "<option value ='$idpais'>$idpais</option>";
+                                    }
+                                    
+                                ?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select name="idpais2" class="caja" style="width: 460px">
+                                <option>Pais Exportado</option>
+                                <?php
+                                    $resultSet = $MySQLiconn->query("SELECT idpais2 FROM pais2");
+                                    while ($rows = $resultSet->fetch_assoc()){
+                                        # code...
+                                        $idpais2 = $rows['idpais2'];
+                                        echo "<option value ='$idpais2'>$idpais2</option>";
+                                    }
+                                    
+                                ?>
+                            </select>
                         </td>
                     </tr>
                     <tr>
@@ -69,11 +97,12 @@ include_once 'crud.php';
                     <td>Tipo</td>
                     <td>Precio</td>
                     <td>Descripcion</td>
-                    <td>Pais</td>
+                    <td>Pais Import</td>
+                    <td>Pais Export</td>
                     <td colspan="2">Acciones</td>
                 </tr>
                 <?php
-                $res = $MySQLiconn->query("SELECT * FROM productos");
+                $res = $MySQLiconn->query("SELECT * FROM pro_ductos");
                 while ($row=$res->fetch_array()){
                 ?>
                 <tr>
@@ -83,6 +112,7 @@ include_once 'crud.php';
                     <td><?php echo $row['precio']; ?></td>
                     <td><?php echo $row['descripcion']; ?></td>
                     <td><?php echo $row['idpais']; ?></td>
+                    <td><?php echo $row['idpais2']; ?></td>
                     <td><a href="?edit=<?php echo $row['id'];?>" onclick="return confirm('Confrimar Edición')">Editar</a></td>
                     <td><a href="?del=<?php echo $row['id'];?>" onclick="return confirm('Confrimar Eliminación')">Eliminar</a></td>
                 </tr>
